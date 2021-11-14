@@ -23,10 +23,10 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/teleivo/dhis2-github-action-metrics.git"
-          npx gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --workflow-id 10954
+          npx --no-install gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --workflow-id 10954
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 10954"
-          npx gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --workflow-id 5591308
+          npx --no-install gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --workflow-id 5591308
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 10954"
           git push
