@@ -1,0 +1,26 @@
+name: cron
+on:
+  schedule:
+    - cron:  '20 3 * * *'
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+          cache: npm
+      - run: npm ci
+      - run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/teleivo/dhis2-github-action-metrics.git"
+          gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --workflow-id 10954
+          git add data
+          git commit -m "chore: fetch GitHub action data for workflow 10954"
+          gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --workflow-id 5591308
+          git add data
+          git commit -m "chore: fetch GitHub action data for workflow 10954"
+          git push
