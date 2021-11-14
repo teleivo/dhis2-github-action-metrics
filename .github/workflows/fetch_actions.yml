@@ -1,4 +1,4 @@
-name: cron
+name: fetch-actions
 on:
   schedule:
     - cron:  '20 3 * * *'
