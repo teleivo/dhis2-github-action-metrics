@@ -2,6 +2,9 @@ name: cron
 on:
   schedule:
     - cron:  '20 3 * * *'
+  workflow_dispatch:
+    created:
+      description: "created parameter of https://docs.github.com/en/rest/reference/actions#list-workflow-runs--parameters"
 
 jobs:
   fetch:
