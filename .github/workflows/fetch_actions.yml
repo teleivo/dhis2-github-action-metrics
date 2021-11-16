@@ -30,3 +30,4 @@ jobs:
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 10954"
           git push
+        name: Fetch and commit GitHub action data
