@@ -30,7 +30,7 @@ jobs:
           git commit -m "chore: fetch GitHub action data for workflow 10954" || true
           npx --no-install gham runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --created ${CREATED:-$TODAY} --workflow-id 5591308
           git add data
-          git commit -m "chore: fetch GitHub action data for workflow 10954" || true
+          git commit -m "chore: fetch GitHub action data for workflow 5591308" || true
           git push
         env:
           CREATED: ${{ github.event.inputs.created }}
