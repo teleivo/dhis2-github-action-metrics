@@ -1,7 +1,7 @@
 name: fetch-actions
 on:
   schedule:
-    - cron:  "21 38 * * *"
+    - cron: "38 21 * * *"
   workflow_dispatch:
     inputs:
       created: # fetch workflow data for configurable date when running manually and fall back to today when triggered by schedule
