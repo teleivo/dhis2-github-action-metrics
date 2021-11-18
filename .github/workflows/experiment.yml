@@ -2,15 +2,19 @@
 name: experiment
 on:
   workflow_dispatch:
-    created:
-      description: "created parameter of https://docs.github.com/en/rest/reference/actions#list-workflow-runs--parameters"
-      # required: true
-      # ${{ github.event.inputs.created }}
+    inputs:
+      created:
+        description: "created parameter of https://docs.github.com/en/rest/reference/actions#list-workflow-runs--parameters"
+        # required: true
+        # ${{ github.event.inputs.created }}
 
 jobs:
-  fetch:
+  experiment:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.event.input.created }}
+          export TODAY=$(date +'%Y-%m-%d')
+          echo $TODAY
+          echo ${CREATED:-$TODAY}
+        env:
+          CREATED: ${{ github.event.inputs.created }} 

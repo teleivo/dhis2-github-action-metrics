@@ -1,10 +1,12 @@
 name: fetch-actions
 on:
   schedule:
-    - cron:  "20 3 * * *"
+    - cron:  "21 38 * * *"
   workflow_dispatch:
     created:
       description: "created parameter of https://docs.github.com/en/rest/reference/actions#list-workflow-runs--parameters"
+      # required: true
+      # ${{ github.event.inputs.created }}
 
 jobs:
   fetch:
