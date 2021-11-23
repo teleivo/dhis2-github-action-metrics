@@ -23,6 +23,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           export TODAY=$(date +'%Y-%m-%d')
+          echo "Fetch GitHub workflow data created on ${CREATED:-$TODAY}"
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/teleivo/dhis2-github-action-metrics.git"
