@@ -18,10 +18,8 @@ jobs:
         with:
           go-version: "1.25"
 
-      - name: Build gham
-        run: |
-          git clone --depth 1 https://github.com/teleivo/github-action-metrics.git /tmp/gham
-          cd /tmp/gham && go build -o /tmp/gham/bin/gham ./cmd/gham
+      - name: Install gham
+        run: go install github.com/teleivo/github-action-metrics/cmd/gham@v0.1.0
 
       - name: Fetch and commit GitHub action data
         run: |
@@ -30,11 +28,11 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
-          /tmp/gham/bin/gham fetch runs -owner dhis2 -repo dhis2-core -with-jobs -destination ./data -token ${{ secrets.GITHUB_TOKEN }} -created ${CREATED:-$TODAY} -workflow-id 10954
+          gham fetch runs -owner dhis2 -repo dhis2-core -with-jobs -destination ./data -token ${{ secrets.GITHUB_TOKEN }} -created ${CREATED:-$TODAY} -workflow-id 10954
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 10954" || true
 
-          /tmp/gham/bin/gham fetch runs -owner dhis2 -repo dhis2-core -with-jobs -destination ./data -token ${{ secrets.GITHUB_TOKEN }} -created ${CREATED:-$TODAY} -workflow-id 5591308
+          gham fetch runs -owner dhis2 -repo dhis2-core -with-jobs -destination ./data -token ${{ secrets.GITHUB_TOKEN }} -created ${CREATED:-$TODAY} -workflow-id 5591308
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 5591308" || true
 
