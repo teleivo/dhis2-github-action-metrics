@@ -4,7 +4,7 @@ on:
     - cron: "38 21 * * *"
   workflow_dispatch:
     inputs:
-      created: # fetch workflow data for configurable date when running manually and fall back to today when triggered by schedule
+      created:
         description: "created parameter of https://docs.github.com/en/rest/reference/actions#list-workflow-runs--parameters"
         required: true
 
@@ -13,27 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4.0.3
+
+      - uses: actions/setup-go@v5
         with:
-          node-version: 12
-          registry-url: "https://npm.pkg.github.com"
-          cache: npm
-      - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
+          go-version: "1.25"
+
+      - name: Build gham
+        run: |
+          git clone --depth 1 https://github.com/teleivo/github-action-metrics.git /tmp/gham
+          cd /tmp/gham && go build -o /tmp/gham/bin/gham ./cmd/gham
+
+      - name: Fetch and commit GitHub action data
+        run: |
           export TODAY=$(date +'%Y-%m-%d')
           echo "Fetch GitHub workflow data created on ${CREATED:-$TODAY}"
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/teleivo/dhis2-github-action-metrics.git"
-          npx --no-install gham fetch runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --created ${CREATED:-$TODAY} --workflow-id 10954
+
+          /tmp/gham/bin/gham fetch runs -owner dhis2 -repo dhis2-core -with-jobs -destination ./data -token ${{ secrets.GITHUB_TOKEN }} -created ${CREATED:-$TODAY} -workflow-id 10954
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 10954" || true
-          npx --no-install gham fetch runs --owner dhis2 --repo dhis2-core --with-jobs --destination ./data --token ${{ secrets.GITHUB_TOKEN }} --created ${CREATED:-$TODAY} --workflow-id 5591308
+
+          /tmp/gham/bin/gham fetch runs -owner dhis2 -repo dhis2-core -with-jobs -destination ./data -token ${{ secrets.GITHUB_TOKEN }} -created ${CREATED:-$TODAY} -workflow-id 5591308
           git add data
           git commit -m "chore: fetch GitHub action data for workflow 5591308" || true
+
           git push
         env:
           CREATED: ${{ github.event.inputs.created }}
-        name: Fetch and commit GitHub action data
