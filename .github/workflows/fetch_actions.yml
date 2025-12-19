@@ -19,7 +19,7 @@ jobs:
           go-version: "1.25"
 
       - name: Install gham
-        run: go install github.com/teleivo/github-action-metrics/cmd/gham@v0.1.0
+        run: go install github.com/teleivo/github-action-metrics/cmd/gham@v0.1.1
 
       - name: Fetch and commit GitHub action data
         run: |
